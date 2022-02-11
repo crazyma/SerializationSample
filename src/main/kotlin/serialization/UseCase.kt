@@ -7,10 +7,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
-import model.BigNumber
-import model.Education
-import model.Machine
-import model.Persona
+import model.*
 
 object UseCase {
 
@@ -51,5 +48,15 @@ object UseCase {
         val jsonString = "{ \"data\": 10000000 }"
         val bigNumber = Json.decodeFromString(BigNumber.serializer(), jsonString)
         println("data: ${bigNumber.data}")
+    }
+
+    fun parseToEnum(){
+        val persona = Persona(name = "Batu", age = 33, product = Product.Product1)
+        val jsonPersona = Json.encodeToJsonElement(Persona.serializer(), persona).jsonObject
+        println("jsonPersona: $jsonPersona")
+        println("--------------------")
+        val string = "{\"name\":\"BatuTasvaluan\",\"age\":33,\"product\":\"product_3\"}" // It would crash cause there no enum value is `product_3`
+        val personaFromString = Json.decodeFromString(Persona.serializer(), string)
+        println("name: ${personaFromString.name} , age: ${personaFromString.age} , product: ${personaFromString.product}")
     }
 }

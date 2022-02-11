@@ -1,6 +1,6 @@
 import serialization.UseCase
 
 fun main() {
-    UseCase.bigNumber()
+    UseCase.parseToEnum()
 }
 
