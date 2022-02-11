@@ -1,11 +1,13 @@
 package serialization
 
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.encodeToJsonElement
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
+import model.BigNumber
 import model.Education
 import model.Machine
 import model.Persona
@@ -25,8 +27,13 @@ object UseCase {
             coerceInputValues = true
             encodeDefaults = true
         }
-        val car = Machine.Vehicle.Car(serialNumber = 333L, )
-        println(json.encodeToString(Machine.Vehicle.serializer(),car)) // This method would create an additional property: `type`
+        val car = Machine.Vehicle.Car(serialNumber = 333L)
+        println(
+            json.encodeToString(
+                Machine.Vehicle.serializer(),
+                car
+            )
+        ) // This method would create an additional property: `type`
         println(json.encodeToJsonElement(car))
     }
 
@@ -40,4 +47,9 @@ object UseCase {
         println("result : $jsonObject")
     }
 
+    fun bigNumber() {
+        val jsonString = "{ \"data\": 10000000 }"
+        val bigNumber = Json.decodeFromString(BigNumber.serializer(), jsonString)
+        println("data: ${bigNumber.data}")
+    }
 }
